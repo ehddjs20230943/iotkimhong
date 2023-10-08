@@ -9,6 +9,7 @@ void setup() {
     p = new Serial(this,"COM3",9600);
     s = new Server(this, 12345);
     // 이곳은 앱 인벤터 Web 항목에 넣을 포트 번호를 정하는 겁니다.
+    // 앱인벤터의 Web 항목에 http://(당신 컴퓨터 아이피).(포트 번호)를 입력하면 됩니다
 }
 
 void draw() {
