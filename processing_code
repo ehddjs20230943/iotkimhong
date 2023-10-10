@@ -32,10 +32,3 @@ void draw() {
         }
     }
 }
-
-void keyPressed() {
-    background(0);
-    textSize(64);
-    text(key, 30, 70);
-    p.write(key);
-}
