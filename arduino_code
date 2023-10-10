@@ -20,7 +20,7 @@ void loop() {
             digitalWrite(13, HIGH); // on 이면 켜고
         }
         else if(v == "off") {
-            digitalWrite(13, LOW); // off 면 끝다
+            digitalWrite(13, LOW); // off 면 끈다
         }
         else if(v == "song") { // song 이면 아래 주파수를 재생한다
             tone(4, 523, 500);
