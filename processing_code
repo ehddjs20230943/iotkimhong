@@ -1,34 +1,45 @@
 import processing.serial.*;
 import processing.net.*;
 
+Serial p;
 Server s;
 Client c;
-Serial p;
 
 void setup() {
-    p = new Serial(this,"COM3",9600);
+    p = new Serial(this, "COM3", 9600);
     s = new Server(this, 12345);
     // 이곳은 앱 인벤터 Web 항목에 넣을 포트 번호를 정하는 겁니다.
     // 앱인벤터의 Web 항목에 http://(당신 컴퓨터 아이피).(포트 번호)를 입력하면 됩니다
 }
 
+String msg = "hi"; // 초기값
+
 void draw() {
     c = s.available();
     
     if (c!=null) {
+        
         String m = c.readString();
-        m = m.substring(m.length() - 1);
         
-        p.write(m);
+        if (m.indexOf("GET /") == 0) {
+            c.write("HTTP/1.1 200 OK\r\n\r\n"); // 스마트폰으로
+            c.write(msg);
+        }
         
-        if (m.indexOf("0")==0){
-            background(255, 0, 0);
+        c.stop(); // 보낸 요청을 계속 반복하지 않게 멈추기
+        
+        if (m.indexOf("PUT /") == 0) { // 아두이노로
+            m = m.substring(m.length() - 1);
+            p.write(m); // 시리얼 포트에 on-off 보내기
+            print(m);
         }
-        else if (m.indexOf("1")==0) {
-            background(0, 0, 255);
-        }
-        else if (m.indexOf("2")==0) {
-            background(0, 255, 0);
-        }
+    }
+    if (p.available() > 0) { // 시리얼 데이터 읽기
+        
+        String m = p.readStringUntil('\n');
+        if (m! = null) {
+            msg = m;
+        } // hi를 아두이노에서 받은 데이터로
+        print(msg);
     }
 }
